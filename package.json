@@ -1,6 +1,6 @@
 {
   "name": "dazzling-graph-progressive",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "description": "Graph manipulation with filtering for progressive rendering of 2D layers",
   "homepage": "https://github.com/flarebyte/dazzling-graph-progressive",
   "author": {
@@ -8,42 +8,62 @@
     "email": "npm.olivier.huin@flarebyte.com",
     "url": "https://github.com/olih"
   },
-  "files": [
-    "dist"
-  ],
   "main": "dist/index.js",
+  "files": [
+    "bin/",
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "lint": "eslint src test",
+    "check": "npm run lint -s && dependency-check package.json --entry src",
+    "watch": "watch 'npm run build' src test",
+    "test": "babel-node test/index.js | tspec",
+    "prebuild": "npm run check -s && npm run clean -s",
+    "build": "babel --optional runtime src -d dist",
+    "postbuild": "npm run test -s",
+    "coverage": "babel-node node_modules/isparta/bin/isparta cover test/index.js",
+    "coveralls": "npm run coverage -s && coveralls < coverage/lcov.info",
+    "postcoveralls": "rimraf ./coverage",
+    "prepublish": "npm run build -s",
+    "deploy": "git pull --rebase origin master && git push origin master",
+    "patch": "npm version patch && npm publish",
+    "minor": "npm version minor && npm publish",
+    "major": "npm version major && npm publish",
+    "postpublish": "git push origin master --follow-tags",
+    "toc": "doctoc --github --title \"# Changelog\" CHANGELOG.md"
+  },
   "keywords": [
     "graph",
     "filter",
     "2d",
     "layer"
   ],
-  "devDependencies": {
-    "eslint-config-xo-space": "^0.7.0",
-    "babel-eslint": "^4.1.6",
-    "eslint-plugin-babel": "^3.0.0",
-    "gulp": "^3.9.0",
-    "gulp-eslint": "^1.0.0",
-    "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-istanbul": "^0.10.3",
-    "gulp-mocha": "^2.0.0",
-    "gulp-plumber": "^1.0.0",
-    "gulp-nsp": "^2.1.0",
-    "gulp-coveralls": "^0.1.0",
-    "gulp-babel": "^5.1.0",
-    "del": "^2.0.2",
-    "babel-core": "^5.5.0",
-    "isparta": "^3.0.3"
+  "bugs": {
+    "url": "https://github.com/flarebyte/dazzling-graph-progressive/issues"
   },
-  "eslintConfig": {
-    "extends": "xo-space/esnext",
-    "env": {
-      "mocha": true
-    }
-  },
+  "homepage": "https://github.com/flarebyte/dazzling-graph-progressive#readme",
   "repository": "https://github.com/flarebyte/dazzling-graph-progressive.git",
-  "scripts": {
-    "prepublish": "gulp prepublish",
-    "test": "gulp"
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.5",
+    "babel-core": "^6.4.5",
+    "babel-eslint": "*",
+    "babel-preset-es2015": "^6.3.13",
+    "coveralls": "*",
+    "dependency-check": "*",
+    "doctoc": "*",
+    "eslint": "*",
+    "isparta": "*",
+    "rimraf": "*",
+    "tap-spec": "*",
+    "tape": "*",
+    "watch": "*"
+  },
+  "dependencies": {
+    "joi": "^7.1.0",
+    "lodash": "^3.10.1"
   }
 }

@@ -1,0 +1,290 @@
+{
+ "natives": {
+  "metadata": {
+   "somedata": "any"
+  },
+  "path": {
+   "someOtherData": "any",
+   "someMoreData": "any"
+  }
+ },
+ "renderers": {
+  "path8x8": {
+   "title": "8 by 8",
+   "description": "Matrix 8 by 8",
+   "tags": [
+    "dc:title",
+    "other:tag22/a/b#main"
+   ],
+   "native": "path",
+   "data": 12
+  },
+  "path12x12": {
+   "native": "path",
+   "data": 17
+  },
+  "path16x16": {
+   "native": "path",
+   "data": 14
+  },
+  "metadata123": {
+   "native": "metadata",
+   "data": "abc"
+  }
+ },
+ "transitions": {
+  "clr": {
+   "black": 12,
+   "white": 16,
+   "grey": 18
+  },
+  "appearance": {
+   "smooth": 19,
+   "grain": 17,
+   "rough": 16
+  }
+ },
+ "iterators": [
+  "texture"
+ ],
+ "aliases": {
+  "clr2": {
+   "blackish": "clr:black",
+   "greyish": "clr:grey"
+  }
+ },
+ "uniques": {
+  "rect1": {
+   "title": "one single child",
+   "description": "A single child",
+   "list": [
+    "1/1"
+   ],
+   "data": {
+    "mustHave": "something"
+   }
+  },
+  "rect2": {
+   "list": [
+    "1/2",
+    "2/2"
+   ],
+   "data": {
+    "mustHave": "something"
+   }
+  }
+ },
+ "nodes": {
+  "p1": {
+   "title": "root",
+   "description": "The root node",
+   "select": [
+    {
+     "f": {
+      "allOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": true
+    },
+    {
+     "f": {
+      "oneOf": [
+       "clr:grey"
+      ]
+     },
+     "r": "path12x12",
+     "data": false
+    }
+   ]
+  },
+  "p2": {
+   "select": [
+    {
+     "f": {
+      "allOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": true
+    },
+    {
+     "f": {
+      "allOf": [
+       "clr:white"
+      ],
+      "noneOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": false
+    }
+   ]
+  },
+  "p3": {
+   "select": [
+    {
+     "f": {
+      "allOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": true
+    }
+   ]
+  },
+  "p4": {
+   "select": [
+    {
+     "f": {
+      "allOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": false
+    }
+   ]
+  },
+  "p4b": {
+   "select": [
+    {
+     "f": {
+      "allOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": true
+    }
+   ]
+  },
+  "p5": {
+   "select": [
+    {
+     "f": {
+      "allOf": [
+       "clr:black"
+      ]
+     },
+     "r": "path8x8",
+     "data": false
+    }
+   ]
+  }
+ },
+ "edges": [
+  {
+   "title": "root",
+   "description": "The root edge",
+   "s": "p1",
+   "d": "p2",
+   "t": [
+    {
+     "x": "*"
+    },
+    {
+     "a": "texture->start"
+    },
+    {
+     "d": "clr:black"
+    }
+   ],
+   "u": [
+    "rect1:1/1"
+   ],
+   "data": 10
+  },
+  {
+   "s": "p2",
+   "d": "p3",
+   "t": [],
+   "u": [
+    "rect1:1/1"
+   ],
+   "data": 10
+  },
+  {
+   "s": "p3",
+   "d": "p4",
+   "t": [
+    {
+     "s": "clr:grey",
+     "d": "clr:white"
+    },
+    {
+     "a": "texture->next"
+    }
+   ],
+   "u": [
+    "rect2:1/2"
+   ],
+   "data": 10
+  },
+  {
+   "s": "p3",
+   "d": "p4b",
+   "t": [
+    {
+     "d": "clr:black"
+    }
+   ],
+   "u": [
+    "rect2:2/2"
+   ],
+   "data": 10
+  },
+  {
+   "s": "p4",
+   "d": "p5",
+   "t": [
+    {
+     "s": "clr:grey",
+     "d": "clr:white"
+    },
+    {
+     "i": "texture",
+     "l": [
+      "appearance:smooth",
+      "appearance:rough",
+      "appearance:grain"
+     ]
+   }
+   ],
+   "u": [
+    "rect1:1/1"
+   ],
+   "data": 10
+  },
+  {
+   "s": "p4b",
+   "d": "p5",
+   "t": [
+    {
+     "d": "clr2:greyish"
+    }
+   ],
+   "u": [
+    "rect1:1/1"
+   ],
+   "data": 10
+  },
+  {
+   "s": "p5",
+   "d": "p2",
+   "t": [
+    {
+     "d": "clr:black"
+    }
+   ],
+   "u": [
+    "rect1:1/1"
+   ],
+   "data": 10
+  }
+ ]
+}
