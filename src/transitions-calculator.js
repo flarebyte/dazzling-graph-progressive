@@ -1,20 +1,20 @@
 import _ from 'lodash';
 
 const iterator = () => {
-  var count = 0;
-  var atStart = true;
+  let count = 0;
+  let atStart = true;
   const next = () => {
     if (count > 1000000) {
       throw new Error('next out of range');
     }
-    count = count + 1;
+    count++;
   };
 
   const previous = () => {
     if (count < -1000000) {
       throw new Error('previous out of range');
     }
-    count = count - 1;
+    count--;
   };
   const start = () => {
     count = 0;
@@ -24,9 +24,8 @@ const iterator = () => {
     count = 0;
     atStart = false;
   };
-  const state = () => {
-    return {atStart, count};
-  };
+  const state = () => _.clone({atStart, count});
+
   return {next, previous, start, end, state};
 };
 
@@ -35,13 +34,12 @@ const calculate = (iterators, total, tnew) => {
     if (t.x === '*') {
       total = [];
     } else if (_.endsWith(t.x, ':*')) {
-      const prefix = t.x.split(':')[0] + ':';
+      const prefix = `${t.x.split(':')[0]}:`;
       total = _.reject(total, v => _.startsWith(v, prefix));
     } else {
       _.remove(total, i => i === t.x);
     }
   };
-
 
   const replaceIfFound = (s, d, list) => {
     const equalSource = i => i === s;
@@ -75,7 +73,6 @@ const calculate = (iterators, total, tnew) => {
       iterators[it].previous();
     }
   };
-
 
   const calculateIteratorTransition = t => {
     /* Apply iterator*/
@@ -114,6 +111,6 @@ const calculate = (iterators, total, tnew) => {
     total = _.uniq(total);
   }
   return total;
-};//end calculate
+};
 
 export default {iterator, calculate};

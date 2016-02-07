@@ -1,15 +1,13 @@
 import _ from 'lodash';
 import Joi from 'joi';
 
-const chunkOptionsSchema = graphDao => {
-  return Joi.object().keys({
-    start: Joi.string().valid(graphDao.nodeKeys).required(),
-    maxArraySize: Joi.number().min(10).description('maximum array size before exiting').required(),
-    initial: Joi.any().description('initial data for transition').required(),
-    reducer: Joi.func().description('function used to reduce the edge values').required(),
-    stopper: Joi.func().description('function used to stop iterating the edges').required()
-  });
-};
+const chunkOptionsSchema = graphDao => Joi.object().keys({
+  start: Joi.string().valid(graphDao.nodeKeys).required(),
+  maxArraySize: Joi.number().min(10).description('maximum array size before exiting').required(),
+  initial: Joi.any().description('initial data for transition').required(),
+  reducer: Joi.func().description('function used to reduce the edge values').required(),
+  stopper: Joi.func().description('function used to stop iterating the edges').required()
+});
 
 export default function (trCalculator, graphDao, options) {
   Joi.assert(options, chunkOptionsSchema(graphDao));

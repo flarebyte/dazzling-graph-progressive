@@ -16,5 +16,4 @@ export default function (conf) {
   const chunk = (graph, options) => chunkGraph(conf, graphDao(graph), options);
 
   return {validate, chunk};
-
 }

@@ -4,7 +4,6 @@ import transitionsCalc from './transitions-calculator.js';
 const iteratorSuffixes = ['start', 'end', 'next', 'previous'];
 
 export default function (graph) {
-
   const iterators = () => {
     const it = {};
     graph.iterators.forEach(i => {
@@ -29,58 +28,42 @@ export default function (graph) {
     return r.sort();
   };
 
-  const starify = owners => {
-    return _.map(nonEmptyKeys(owners), prefix => `${prefix}:*`).sort();
-  };
+  const starify = owners => _.map(nonEmptyKeys(owners), prefix => `${prefix}:*`).sort();
 
-  const starAliasKeys = () => {
-    return starify(graph.aliases);
-  };
+  const starAliasKeys = () => starify(graph.aliases);
 
-  const starTransitionKeys = () => {
-    return starify(graph.transitions);
-  };
+  const starTransitionKeys = () => starify(graph.transitions);
 
   const aliasKeys = () => {
-    const groupedKeys = _.map(_.keys(graph.aliases), prefix => {
-      return _.map(_.keys(graph.aliases[prefix]), t => `${prefix}:${t}`);
-    });
+    const groupedKeys = _.map(_.keys(graph.aliases), prefix => _.map(_.keys(graph.aliases[prefix]), t => `${prefix}:${t}`));
     return _.flatten(groupedKeys).sort();
   };
 
   const aliasKeysToTransitionKeys = () => {
-    var a2t = {};
+    const a2t = {};
     _.forEach(_.keys(graph.aliases), prefix => {
       _.forEach(_.keys(graph.aliases[prefix]), t => `${prefix}:${t}`);
-       //mapping todo
+       //  mapping todo
     });
     return a2t;
   };
 
   const transitionKeys = () => {
-    const groupedKeys = _.map(_.keys(graph.transitions), prefix => {
-      return _.map(_.keys(graph.transitions[prefix]), t => `${prefix}:${t}`);
-    });
+    const groupedKeys = _.map(_.keys(graph.transitions), prefix => _.map(_.keys(graph.transitions[prefix]), t => `${prefix}:${t}`));
     return _.flatten(groupedKeys).sort();
   };
 
   const iteratorKeys = () => {
-    const groupedKeys = _.map(graph.iterators, prefix => {
-      return _.map(iteratorSuffixes, a => `${prefix}->${a}`);
-    });
+    const groupedKeys = _.map(graph.iterators, prefix => _.map(iteratorSuffixes, a => `${prefix}->${a}`));
     return _.flatten(groupedKeys).sort();
   };
 
-  const uniqueKeys = ()=> {
-    const uk = _.map(_.keys(graph.uniques), prefix => {
-      return _.map(graph.uniques[prefix].list, u => `${prefix}:${u}`);
-    });
+  const uniqueKeys = () => {
+    const uk = _.map(_.keys(graph.uniques), prefix => _.map(graph.uniques[prefix].list, u => `${prefix}:${u}`));
     return _.flattenDeep(uk).sort();
   };
 
-  const searchEdgesBySource = name => {
-    return _.filter(graph.edges, 's', name);
-  };
+  const searchEdgesBySource = name => _.filter(graph.edges, {s: name});
 
   const allTransitionKeys = transitionKeys();
   const allAliasKeys = aliasKeys();
@@ -115,5 +98,4 @@ export default function (graph) {
      resolveAliases,
      searchEdgesBySource
    };
-
 }
