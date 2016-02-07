@@ -35,11 +35,11 @@ test('Chunk Graph should chunk graph until reaching stopper limit', t => {
   };
 
   const chunks = chunkGraph({calculate}, graphDao, chunkOptions);
-  t.plan(4);
+  t.plan(5);
   t.equal(chunks.length, 10, 'length');
   const onlyTotals = chunks.map(n => n.total);
   t.deepEqual(onlyTotals, [0, 3, 8, 9, 12, 17, 18, 21, 26, 27], 'only totals');
-  // assert.isBelow(_.last(onlyTotals), limit);
+  t.ok(_.last(onlyTotals) < limit, 'below limit');
   const onlyTransitions = chunks.map(n => n.transitions);
   const EMPTY = [];
   const AA = ['AA'];

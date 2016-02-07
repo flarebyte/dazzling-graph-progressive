@@ -7,7 +7,7 @@ require('./transitions-calculator.js');
 require('./validate-configuration.js');
 require('./validate-graph.js');
 
-const validGraph = require('./fixture-graph.json');
+const validGraph = require('./fixtures/simple-graph.json');
 
   // it('should chunk a graph in small tasks which can be run in parallel!', function () {
   //   const graph = dazzlingGraphProgressive(validConfig);

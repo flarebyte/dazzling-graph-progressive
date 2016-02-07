@@ -203,7 +203,7 @@ test('should validate an edge section', t => {
 });
 
 test('should validate graph', t => {
-  const validation = validateGraph.validate(validConfig, require('./fixture-graph.json'));
+  const validation = validateGraph.validate(validConfig, require('./fixtures/simple-graph.json'));
   t.plan(1);
   t.notEqual(typeof validation, 'Error');
 });
