@@ -1,8 +1,8 @@
 {
   "name": "dazzling-graph-progressive",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Graph manipulation with filtering for progressive rendering of 2D layers",
-  "homepage": "https://github.com/flarebyte/dazzling-graph-progressive",
+  "homepage": "https://github.com/flarebyte/dazzling-graph-progressive#readme",
   "author": {
     "name": "Olivier Huin",
     "email": "npm.olivier.huin@flarebyte.com",
@@ -42,7 +42,6 @@
   "bugs": {
     "url": "https://github.com/flarebyte/dazzling-graph-progressive/issues"
   },
-  "homepage": "https://github.com/flarebyte/dazzling-graph-progressive#readme",
   "repository": "https://github.com/flarebyte/dazzling-graph-progressive.git",
   "engines": {
     "node": ">=4.0.0"
