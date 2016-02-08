@@ -4,11 +4,12 @@ import graphDao from './graph-dao.js';
 
 const titleSchema = Joi.string().min(1).max(60).description('title').optional();
 const descriptionSchema = Joi.string().min(1).max(500).description('description').optional();
+const commentSchema = Joi.string().min(1).max(500).description('comment').optional();
 const tagSchema = Joi.string().uri().min(1).max(255).description('tag').required();
 const tagsSchema = Joi.array().items(tagSchema).max(20).optional();
 
 const nativeSchema = graph => {
-  const nats = _.mapValues(graph.config.validators.natives, nr => nr.n);
+  const nats = _.mapValues(graph.config.validators.natives, nr => nr.native(graph.dao));
   return Joi.object().keys(nats);
 };
 
@@ -32,9 +33,10 @@ const uniqueSchema = graph => {
   return Joi.object().keys({
     title: titleSchema,
     description: descriptionSchema,
+    comment: commentSchema,
     tags: tagsSchema,
     list: Joi.array().items(Joi.string().min(1)).required(),
-    data: graph.config.validators.uniqueData
+    data: graph.config.validators.uniqueData(graph.dao)
   });
 };
 
@@ -44,17 +46,17 @@ const aliasesSchema = graph => {
 };
 
 const transitionsSchema = graph => {
-  return Joi.object().pattern(new RegExp(graph.config.regexes.transitionsItem), graph.config.validators.transitionData);
+  return Joi.object().pattern(new RegExp(graph.config.regexes.transitionsItem), graph.config.validators.transitionData(graph.dao));
 };
 
 const buildRendererAlternatives = graph => {
   var alt = Joi.alternatives();
-  _.forOwn(graph.config.validators.natives, (v, k) => alt = alt.when('native', {is: k, then: v.r}));
+  _.forOwn(graph.config.validators.natives, (v, k) => alt = alt.when('native', {is: k, then: v.renderer(graph.dao)}));
   return alt;
 };
 
 const buildNodeSelectAlternatives = graph => {
-  const renderer2NativeValidator = _.mapValues(graph.renderers, r => graph.config.validators.natives[r.native].ns);
+  const renderer2NativeValidator = _.mapValues(graph.renderers, r => graph.config.validators.natives[r.native].nodeSelect(graph.dao));
   var alt = Joi.alternatives();
   _.forOwn(renderer2NativeValidator, (v, k) => alt = alt.when('r', {is: k, then: v}));
   return alt;
@@ -64,6 +66,7 @@ const rendererSchema = graph => {
   return Joi.object().keys({
     title: titleSchema,
     description: descriptionSchema,
+    comment: commentSchema,
     tags: tagsSchema,
     native: Joi.string().valid(_.keys(graph.config.validators.natives)).required(),
     data: buildRendererAlternatives(graph)
@@ -91,6 +94,7 @@ const nodeSchema = graph => {
   return Joi.object().keys({
     title: titleSchema,
     description: descriptionSchema,
+    comment: commentSchema,
     tags: tagsSchema,
     select: Joi.array().min(1).items(nodeItemSchema(graph)).description('items').required()
   });
@@ -100,12 +104,13 @@ const edgeSchema = graph => {
   return Joi.object().keys({
     title: titleSchema,
     description: descriptionSchema,
+    comment: commentSchema,
     tags: tagsSchema,
     s: Joi.string().valid(graph.dao.nodeKeys).description('source').required(),
     d: Joi.string().valid(graph.dao.nodeKeys).description('destination').required(),
     t: Joi.array().items(transitionSchema(graph)).description('transitions').required(),
     u: Joi.array().items(Joi.string().valid(graph.dao.uniqueKeys)).description('unique ids').required(),
-    data: graph.config.validators.edgeValues
+    data: graph.config.validators.edgeData(graph.dao)
   });
 };
 
@@ -121,17 +126,19 @@ const minGraphSchema = Joi.object().keys({
   edges: Joi.array().min(1).required()
 });
 
+const pattern = (graph, fregex) => new RegExp(fregex(graph.dao));
+
 const graphSchema = graph => {
   return Joi.object().keys({
     config: Joi.object(),
     dao: Joi.object(),
     natives: nativeSchema(graph),
-    iterators: Joi.array().items(Joi.string().regex(new RegExp(graph.config.regexes.iterators))),
-    uniques: Joi.object().min(1).pattern(new RegExp(graph.config.regexes.uniques), uniqueSchema(graph)).required(),
-    renderers: Joi.object().min(1).pattern(new RegExp(graph.config.regexes.renderers), rendererSchema(graph)).required(),
-    transitions: Joi.object().min(1).pattern(new RegExp(graph.config.regexes.transitions), transitionsSchema(graph)).required(),
-    aliases: Joi.object().pattern(new RegExp(graph.config.regexes.aliases), aliasesSchema(graph)).required(),
-    nodes: Joi.object().pattern(new RegExp(graph.config.regexes.nodes), nodeSchema(graph)),
+    iterators: Joi.array().items(Joi.string().regex(pattern(graph, graph.config.regexes.iterators))),
+    uniques: Joi.object().min(1).pattern(pattern(graph, graph.config.regexes.uniques), uniqueSchema(graph)).required(),
+    renderers: Joi.object().min(1).pattern(pattern(graph, graph.config.regexes.renderers), rendererSchema(graph)).required(),
+    transitions: Joi.object().min(1).pattern(pattern(graph, graph.config.regexes.transitions), transitionsSchema(graph)).required(),
+    aliases: Joi.object().pattern(pattern(graph, graph.config.regexes.aliases), aliasesSchema(graph)).required(),
+    nodes: Joi.object().pattern(pattern(graph, graph.config.regexes.nodes), nodeSchema(graph)),
     edges: Joi.array().items(edgeSchema(graph)).required()
   });
 };

@@ -12,6 +12,7 @@
   "path8x8": {
    "title": "8 by 8",
    "description": "Matrix 8 by 8",
+   "comment": "Some comment",
    "tags": [
     "dc:title",
     "other:tag22/a/b#main"
@@ -78,6 +79,7 @@
   "p1": {
    "title": "root",
    "description": "The root node",
+   "comment": "Some comment for root",
    "select": [
     {
      "f": {
@@ -100,6 +102,10 @@
    ]
   },
   "p2": {
+   "title": "p2 title",
+   "description": "p2 description",
+   "tags": ["tag:A", "tag:B"],
+   "data": "p2 data",
    "select": [
     {
      "f": {
@@ -181,6 +187,7 @@
   {
    "title": "root",
    "description": "The root edge",
+   "comment": "some comment for edge",
    "s": "p1",
    "d": "p2",
    "t": [
@@ -211,6 +218,7 @@
   {
    "s": "p3",
    "d": "p4",
+   "tags": ["tag:C"],
    "t": [
     {
      "s": "clr:grey",
