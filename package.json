@@ -1,6 +1,6 @@
 {
   "name": "dazzling-graph-progressive",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Graph manipulation with filtering for progressive rendering of 2D layers",
   "homepage": "https://github.com/flarebyte/dazzling-graph-progressive#readme",
   "author": {
