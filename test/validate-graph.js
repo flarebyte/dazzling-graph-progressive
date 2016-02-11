@@ -1,37 +1,7 @@
 import validateGraph from '../src/validate-graph.js';
-import Joi from 'joi';
 import test from 'tape';
-
-const valid = Joi;
-const validConfig = {
-  validators: {
-    natives: {
-      metadata: {
-        n: valid.object().min(1).required(),
-        r: valid.string().max(4).required(),
-        ns: valid.string().max(5).required()
-      },
-      path: {
-        n: valid.object().min(2).required(),
-        r: valid.number().required(),
-        ns: valid.boolean().required()
-      }
-    },
-    uniqueData: valid.object().min(1).required(),
-    transitionData: valid.number().required(),
-    edgeValues: valid.number().required()
-  },
-  regexes: {
-    renderers: '[A-Za-z0-9]{2,10}',
-    transitions: '[A-Za-z0-9]{2,10}',
-    transitionsItem: '[A-Za-z0-9]{2,10}',
-    iterators: '[A-Za-z0-9]{2,10}',
-    aliases: '[A-Za-z0-9]{2,10}',
-    aliasesItem: '[A-Za-z0-9]{2,10}',
-    uniques: '[A-Za-z0-9]{2,10}',
-    nodes: '[A-Za-z0-9]{2,10}'
-  }
-};
+import config from './config.js';
+import Joi from 'joi';
 
 const validationIncludesMsg = (value, validator, message) => Joi.validate(value, validator).error.message.includes(message);
 
@@ -41,12 +11,15 @@ test('Validate Graph should validate a renderer section', t => {
       validators: {
         natives: {
           path: {
-            n: valid.object().min(2).required(),
-            r: valid.number().required(),
-            ns: valid.boolean().required()
+            native: graphDao => graphDao.valid().object().min(2).required(),
+            renderer: graphDao => graphDao.valid().number().required(),
+            nodeSelect: graphDao => graphDao.valid().boolean().required()
           }
         }
       }
+    },
+    dao: {
+      valid: () => Joi
     }
   };
   const validator = validateGraph.rendererSchema(graph4Schema);
@@ -71,7 +44,8 @@ test('should validate a node section', t => {
   const graph4Schema = {
     dao: {
       filterKeys: ['clr:black', 'clr:purple', 'clr:grey', 'prefix:*'],
-      rendererKeys: ['path8x8', 'path12x12']
+      rendererKeys: ['path8x8', 'path12x12'],
+      valid: () => Joi
     },
     renderers: {
       path8x8: {native: 'path'},
@@ -81,13 +55,13 @@ test('should validate a node section', t => {
       validators: {
         natives: {
           path: {
-            n: valid.object().min(2).required(),
-            r: valid.number().required(),
-            ns: valid.boolean().required()
+            native: graphDao => graphDao.valid().object().min(2).required(),
+            renderer: graphDao => graphDao.valid().number().required(),
+            nodeSelect: graphDao => graphDao.valid().boolean().required()
           }
         }
       }
-    }
+    },
   };
   const validator = validateGraph.nodeSchema(graph4Schema);
 
@@ -142,12 +116,13 @@ test('should validate an edge section', t => {
       uniqueKeys: ['rect1:1/1'],
       nodeKeys: ['p1', 'p2'],
       filterKeys: ['*'],
-      iteratorKeys: ['texture->start']
+      iteratorKeys: ['texture->start'],
+      valid: () => Joi
     },
     iterators: ['texture'],
     config: {
       validators: {
-        edgeValues: valid.number().required()
+        edgeData: graphDao => graphDao.valid().number().required()
       }
     }
   };
@@ -203,7 +178,7 @@ test('should validate an edge section', t => {
 });
 
 test('should validate graph', t => {
-  const validation = validateGraph.validate(validConfig, require('./fixtures/simple-graph.json'));
+  const validation = validateGraph.validate(config.valid, require('./fixtures/simple-graph.json'));
   t.plan(1);
   t.notEqual(typeof validation, 'Error');
 });

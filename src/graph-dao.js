@@ -1,5 +1,7 @@
 import _ from 'lodash';
+import Joi from 'joi';
 import transitionsCalc from './transitions-calculator.js';
+import nodeSelector from './node-selector.js';
 
 const iteratorSuffixes = ['start', 'end', 'next', 'previous'];
 
@@ -11,6 +13,10 @@ export default function (graph) {
     });
     return it;
   };
+
+  const calculateTransitions = (it, total, tnew) => transitionsCalc.calculate(it, total, tnew);
+  const selectRenderers = (state, name) => nodeSelector.select(state, graph.nodes[name]);
+
   const nodeKeys = _.keys(graph.nodes);
 
   const nativeKeys = _.keys(graph.natives);
@@ -64,6 +70,7 @@ export default function (graph) {
   };
 
   const searchEdgesBySource = name => _.filter(graph.edges, {s: name});
+  const findNodeByName = name => graph.nodes[name];
 
   const allTransitionKeys = transitionKeys();
   const allAliasKeys = aliasKeys();
@@ -83,7 +90,11 @@ export default function (graph) {
     return withoutAliases.concat(aliasAsTrans);
   };
 
+  const valid = ()=> Joi
+
   return {iterators,
+     calculateTransitions,
+     selectRenderers,
      nodeKeys,
      nativeKeys,
      rendererKeys,
@@ -96,6 +107,8 @@ export default function (graph) {
      starTransitionKeys: allStarTransitionKeys,
      filterKeys,
      resolveAliases,
-     searchEdgesBySource
+     searchEdgesBySource,
+     findNodeByName,
+     valid
    };
 }

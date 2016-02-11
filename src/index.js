@@ -13,7 +13,7 @@ export default function (conf) {
   validateConf.assertValid(conf);
 
   const validate = graph => validateGraph.validate(conf, graph);
-  const chunk = (graph, options) => chunkGraph(conf, graphDao(graph), options);
+  const chunk = (graph, options) => chunkGraph(graphDao(graph), options);
 
   return {validate, chunk};
 }
