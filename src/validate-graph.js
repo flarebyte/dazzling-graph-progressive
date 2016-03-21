@@ -42,11 +42,11 @@ const uniqueSchema = graph => {
 
 const aliasesSchema = graph => {
   const transitionKeys = graph.dao.transitionKeys;
-  return Joi.object().pattern(new RegExp(graph.config.regexes.aliasesItem), Joi.string().valid(transitionKeys));
+  return Joi.object().pattern(new RegExp(graph.config.regexes.aliasesItem(graph.dao)), Joi.string().valid(transitionKeys));
 };
 
 const transitionsSchema = graph => {
-  return Joi.object().pattern(new RegExp(graph.config.regexes.transitionsItem), graph.config.validators.transitionData(graph.dao));
+  return Joi.object().pattern(new RegExp(graph.config.regexes.transitionsItem(graph.dao)), graph.config.validators.transitionData(graph.dao));
 };
 
 const buildRendererAlternatives = graph => {
