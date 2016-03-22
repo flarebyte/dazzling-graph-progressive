@@ -2,17 +2,17 @@ const valid = {
   validators: {
     natives: {
       metadata: {
-        native: graphDao => graphDao.valid().object().min(1).required(),
-        renderer: graphDao => graphDao.valid().string().max(4).required(),
-        nodeSelect: graphDao => graphDao.valid().string().max(5).required()
+        native: graphDao => graphDao.valid().object().min( 1 ).required(),
+        renderer: graphDao => graphDao.valid().string().max( 4 ).required(),
+        nodeSelect: graphDao => graphDao.valid().string().max( 5 ).required()
       },
       path: {
-        native: graphDao => graphDao.valid().object().min(2).required(),
+        native: graphDao => graphDao.valid().object().min( 2 ).required(),
         renderer: graphDao => graphDao.valid().number().required(),
         nodeSelect: graphDao => graphDao.valid().boolean().required()
       }
     },
-    uniqueData: graphDao => graphDao.valid().object().min(1).required(),
+    uniqueData: graphDao => graphDao.valid().object().min( 1 ).required(),
     transitionData: graphDao => graphDao.valid().number().required(),
     edgeData: graphDao => graphDao.valid().number().required()
   },
@@ -28,4 +28,4 @@ const valid = {
   }
 };
 
-export default {valid};
+export default { valid };

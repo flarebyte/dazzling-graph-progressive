@@ -105,7 +105,6 @@
    "title": "p2 title",
    "description": "p2 description",
    "tags": ["tag:A", "tag:B"],
-   "data": "p2 data",
    "select": [
     {
      "f": {

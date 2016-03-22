@@ -35,7 +35,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   },
@@ -66,7 +65,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     },
     "destination": {
@@ -162,7 +160,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   },
@@ -194,7 +191,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     },
     "destination": {
@@ -291,7 +287,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   },
@@ -384,7 +379,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   },
@@ -474,7 +468,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   },
@@ -506,7 +499,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     },
     "destination": {
@@ -605,7 +597,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   },
@@ -696,7 +687,6 @@
         "tag:A",
         "tag:B"
       ],
-      "data": "p2 data",
       "id": "p2"
     }
   }

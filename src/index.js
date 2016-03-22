@@ -5,15 +5,15 @@ import validateGraph from './validate-graph.js';
 import chunkGraph from './chunk-graph.js';
 import graphDao from './graph-dao.js';
 
-export default function (conf) {
-  if (_.isUndefined(conf)) {
+export default function ( conf ) {
+  if ( _.isUndefined( conf ) ) {
     return Joi;
   }
 
-  validateConf.assertValid(conf);
+  validateConf.assertValid( conf );
 
-  const validate = graph => validateGraph.validate(conf, graph);
-  const chunk = (graph, options) => chunkGraph(graphDao(graph), options);
+  const validate = graph => validateGraph.validate( conf, graph );
+  const chunk = ( graph, options ) => chunkGraph( graphDao( graph ), options );
 
-  return {validate, chunk};
+  return { validate, chunk };
 }
